@@ -56,7 +56,7 @@ lr = LogisticRegression(C=1000.0, random_state = 0)
 lr.fit(X_train_std, y_train)
 
 plot_decision_regions(X_combined_std, y_combined, classifier=lr, test_idx=range(105, 150))
-plt.show()
+#plt.show()
 
-for X_test_val in X_test:
+for X_test_val in X_test_std:
     print(lr.predict_proba(X_test_val.reshape(1, -1)))
