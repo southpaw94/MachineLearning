@@ -1,0 +1,14 @@
+This directory contains several programs which display several different
+feature selection techniques, which can be used to reduce the dimensions of
+the training dataset. This is beneficial because it reduces the overhead of
+the machine learning algorithm, allowing an hypothesis to be reached sooner
+than otherwise possible. An overview of each program follows.
+
+	1. sbs.py: This file contains the sbs class, which stands for
+	   sequential backwards selection. Effectively, this loops through the
+	   hypotheses determined via each feature, determines which feature
+	   has the least impact on the hypothesis, and removes it. This
+	   process repeats until the specified number of features remains.
+	2. sbs_test.py: This is a test of the sbs class. It displays the 
+	   accuracy of the model versus the number of features in the model
+	3. WineDataSet.py: 
