@@ -11,7 +11,7 @@ from sklearn.preprocessing import StandardScaler
 from numpy.linalg import eig
 import numpy as np
 
-df_wine = pd.read_csv('wine.csv', header=None)
+df_wine = pd.read_csv('Wine.csv', header=None)
 X, y = df_wine.iloc[:, 1:].values, df_wine.iloc[:, 0].values
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
 
@@ -43,7 +43,7 @@ plt.xlabel('Principal Components')
 plt.legend(loc='best')
 plt.show()
 
-eig_pairs = [[np.abs(eig_vals[i]), eig_vecs[i]] for i in range(len(eig_vals))]
+eig_pairs = [(np.abs(eig_vals[i]), eig_vecs[:,i]) for i in range(len(eig_vals))]
 eig_pairs.sort(reverse=True)
 
 w = np.hstack((eig_pairs[0][1][:, np.newaxis], eig_pairs[1][1][:, np.newaxis]))
@@ -56,7 +56,7 @@ X_train_pca = X_train_std.dot(w)
 colors = ['r', 'b', 'g']
 markers = ['s', 'x', 'o']
 for l, c, m in zip(np.unique(y_train), colors, markers):
-    plt.scatter(X_train_pca[y_train == 1, 0], X_train_pca[y_train == 1, 1], c=c, label=l, marker=m)
+    plt.scatter(X_train_pca[y_train == l, 0], X_train_pca[y_train == l, 1], c=c, label=l, marker=m)
 plt.xlabel('PC 1')
 plt.ylabel('PC 2')
 plt.legend(loc='lower left')
