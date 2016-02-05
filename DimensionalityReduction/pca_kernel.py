@@ -21,15 +21,17 @@ def rbf_kernel_pca(X, gamma, n_components):
     -------
     X_pc: {Numpy ndarray}, shape = [n_samples, k_features]
         Projected dataset
-
+    
+    lambdas: list
+        Eigenvalues
     """
     # Calculate pairwise squared Euclidean distances
     # in the MxN dimensional dataset
     sq_dists = pdist(X, 'sqeuclidean')
-
+    
     # Convert pairwise distances into a square matrix
     mat_sq_dists = squareform(sq_dists)
-
+    print('Size of square euclidean distance matrix: %i x %i' % (mat_sq_dists.shape[0], mat_sq_dists.shape[1]))
     # Compute the symmetric kernel matrix
     K = exp(-gamma * mat_sq_dists)
 
@@ -46,6 +48,9 @@ def rbf_kernel_pca(X, gamma, n_components):
     X_pc = np.column_stack((eigvecs[:, -i] \
             for i in range(1, n_components + 1)))
 
-    return X_pc
+    # Collect the corresponding Eigenvalues
+    lambdas = [eigvals[-i] for i in range(1, n_components+1)]
+
+    return X_pc, lambdas
 
 
