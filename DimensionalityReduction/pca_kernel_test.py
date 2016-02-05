@@ -14,7 +14,7 @@ plt.scatter(X[y==1, 0], X[y==1, 1], color='blue', \
 plt.title('Raw Data')
 plt.show()
 
-plt.clf()
+
 scikit_pca = PCA(n_components=2)
 X_spca = scikit_pca.fit_transform(X)
 fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(7, 3))
@@ -31,5 +31,5 @@ ax[0].set_ylabel('PC1')
 ax[1].set_ylim([-1, 1])
 ax[1].set_yticks([])
 ax[1].set_xlabel('PC1')
-ax[0].set_title('Attempt at linear classification region')
+plt.suptitle('Attempt at linear classification region')
 plt.show()
