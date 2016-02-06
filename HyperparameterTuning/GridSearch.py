@@ -51,4 +51,9 @@ print('Best parameter set from exhaustive search: %s' % gs.best_params_)
 # How does this best model fit our test data?
 clf = gs.best_estimator_
 clf.fit(X_train, y_train)
-print('Test accuracy: %.3f' % clf.score(X_test, y_test))
+print('Grid search test accuracy: %.3f' % clf.score(X_test, y_test))
+
+# How does nested cross-validation perform?
+scores = cross_val_score(gs, X, y, scoring='accuracy', cv = 10)
+print('CV accuracy: %.3f +/- %.3f' %(np.mean(scores), \
+        np.std(scores)))
