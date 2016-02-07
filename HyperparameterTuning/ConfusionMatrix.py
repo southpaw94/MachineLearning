@@ -8,6 +8,8 @@ from sklearn.cross_validation import StratifiedKFold
 from sklearn.svm import SVC
 from sklearn.metrics import confusion_matrix
 from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import precision_score
+from sklearn.metrics import recall_score, f1_score
 
 # This program introduces validation curves, which are essential
 # in reducing over or under fitting of the learning algorithm.
@@ -31,6 +33,12 @@ pipe_svc.fit(X_train, y_train)
 y_pred = pipe_svc.predict(X_test)
 confmat = confusion_matrix(y_true = y_test, y_pred = y_pred)
 print(confmat)
+
+print('Precision: %.3f' % precision_score( \
+        y_true=y_test, y_pred=y_pred))
+print('Recall: %.3f' % recall_score(y_true=y_test, y_pred=y_pred))
+print('F1: %.3f' % f1_score(y_true = y_test, \
+        y_pred = y_pred))
 
 fig, ax = plt.subplots(figsize = (2.5, 2.5))
 ax.matshow(confmat, cmap=plt.cm.Blues, alpha=0.3)
