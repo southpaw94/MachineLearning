@@ -38,6 +38,10 @@ mean_tpr = 0.0
 mean_fpr = np.linspace(0, 1, 100)
 all_tpr = []
 
+# Creates a Logistic Regression pipeline, first the data is scaled, then 
+# the data is put through a principle component analysis which returns the
+# two principle components, and finally the remaining data undergoes 
+# logistic regression to classify the data
 pipe_lr = Pipeline([('scl', StandardScaler()), ('pca', PCA(n_components=2)), \
         ('clf', LogisticRegression(random_state=1))])
 pipe_lr.fit(X_train, y_train)
