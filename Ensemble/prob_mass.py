@@ -1,6 +1,9 @@
 # Implements a probability mass function, which computes
 # the probability mass given an average value for error
-# in classification
+# in classification. As can be seen, the ensemble 
+# method works well for average classification errors 
+# below 0.5, but exacerbates the error in classification
+# when the average error is above this value.
 
 from scipy.misc import comb
 import numpy as np
