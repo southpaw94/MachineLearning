@@ -12,6 +12,7 @@ from sklearn.metrics import roc_curve
 from sklearn.metrics import auc
 from sklearn.ensemble import VotingClassifier
 from itertools import product
+from sklearn.grid_search import GridSearchCV
 
 # This program is similar to iris.py, but instead of using
 # our own majority voting classifier algorithm, we make use
@@ -148,3 +149,15 @@ plt.text(-11.5, 4.5,
         ha = 'center', va = 'center',
         fontsize=12, rotation=90)
 plt.show()
+
+params = {'clf2__max_depth': [1, 2], 'p1__clf__C': [0.001, 0.1, 100]}
+grid = GridSearchCV(estimator=mv_clf, param_grid = params,
+        cv = 10, scoring = 'roc_auc')
+grid.fit(X_train, y_train)
+
+for params, mean_score, scores in grid.grid_scores_:
+    print("%0.3f+/-%0.2f %r"
+            % (mean_score, scores.std() / 2, params))
+
+print('Best parameters: %s' % grid.best_params_)
+print('Accuracy: %.2f' % grid.best_score_)
