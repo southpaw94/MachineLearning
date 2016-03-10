@@ -1,0 +1,75 @@
+from keras.models import Sequential
+from keras.layers.core import Dense
+from keras.optimizers import SGD
+from keras.utils import np_utils
+from load_mnist import load_mnist
+import numpy as np
+
+# This program creaes an artificial neural network with
+# several hidden layers, each consisting of a relatively
+# large amount of neurons. Though this can be run on a
+# standard CPU, it will likely take ages to complete. It
+# is recommended to set your Theano library flags for
+# theano.device='gpu' in order to have the code execute
+# on a CUDA enabled Nvidia GPU. 
+
+# Load the training and testing datasets
+X_train, y_train = load_mnist('')
+X_test, y_test = load_mnist('', kind='t10k')
+
+# Transform the label set from integer values to a one-vs-
+# all vector representation
+y_train_ohe = np_utils.to_categorical(y_train)
+
+# np.random.seed(1)
+
+# Create a sequential neural network, IE all values only
+# move forward to subsequent layers, no feedback
+model = Sequential()
+
+# Add the first layer, 784 (28x28 pixel images) inputs,
+# 2500 outputs
+model.add(Dense(input_dim=X_train.shape[1],
+    output_dim=2500, init='uniform',
+    activation='tanh'))
+
+# Add subsequent hidden layers, each with 100 outputs less
+# than the previous
+# for i in range(2400, 0, -100):
+#    model.add(Dense(input_dim = i + 100, output_dim = i,
+#        init='uniform', activation='tanh'))
+#    print('Adding layer with %i inputs and %i outputs' \
+#            % (i + 100, i))
+
+model.add(Dense(input_dim = 2500, output_dim = 2000,
+    init='uniform', activation='tanh'))
+model.add(Dense(input_dim = 2000, output_dim = 1500,
+    init='uniform', activation='tanh'))
+model.add(Dense(input_dim = 1500, output_dim = 1000,
+    init='unif', activation='tanh'))
+model.add(Dense(input_dim = 1000, output_dim = 500,
+    init='unif', activation='tanh'))
+
+# Add the output layer, with 100 inputs and 10 outputs, one
+# for each possible digit, with a 'softmax' activation function
+# meaning each of the ten outputs will present the probability
+# that a given image belongs to that output
+model.add(Dense(input_dim = 500, output_dim=y_train_ohe.shape[1],
+        init='uniform', activation='softmax'))
+
+# Stochastic gradient descent optimizer with a variable learning
+# rate
+sgd = SGD(lr=0.001, decay=1e-7, momentum=0.9)
+
+# Compile the code, either into Nvidia C code or standard C code
+model.compile(loss='categorical_crossentropy', optimizer=sgd)
+
+# Fit the model with the training data, 500 epochs, 200 batches
+# of size 300, print output, split 10% validation data at each
+# minibatch
+model.fit(X_train, y_train_ohe, nb_epoch=100,
+        batch_size=300, verbose=1, validation_split=0.1,
+        show_accuracy=True)
+
+y_train_pred = model.predict_classes(X_train, verbose=0)
+print('First 3 predictions: ', y_train_pred[:3])
