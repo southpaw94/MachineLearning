@@ -2,8 +2,8 @@ import pymysql
 import pandas as pd
 
 conn = pymysql.connect(host='localhost', 
-        user='root', 
+        user='monitor', 
         password='password', 
-        db='seniordesign')
+        db='ECE491')
 df = pd.read_sql("SELECT * FROM sensorData", conn)
 print(df.columns)

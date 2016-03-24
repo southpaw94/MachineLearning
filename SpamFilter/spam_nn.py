@@ -18,18 +18,20 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1)
 y_train_ohe = np_utils.to_categorical(y_train)
 
 model = Sequential()
-model.add(Dense(input_dim=X_train.shape[1], output_dim=2000, activation='tanh', init='uniform'))
-model.add(Dense(input_dim=2000, output_dim=1500, activation='tanh', init='uniform'))
-model.add(Dense(input_dim=1500, output_dim=1000, activation='tanh', init='uniform'))
-model.add(Dense(input_dim=1000, output_dim=500, activation='tanh', init='uniform'))
-model.add(Dense(input_dim=500, output_dim=50, activation='tanh', init='uniform'))
-model.add(Dense(input_dim=50, output_dim=y_train_ohe.shape[1], activation='softmax', init='uniform'))
 
-sgd = SGD(lr=0.001, momentum=0.9, decay=1e-7)
+model.add(Dense(input_dim=X_train.shape[1], output_dim=2500, activation='tanh', init='uniform'))
+
+for i in range(2400, 0, -300):
+    model.add(Dense(input_dim=i + 100, output_dim=i, init='uniform', activation='tanh'))
+    model.add(Dropout(0.25))
+
+model.add(Dense(input_dim=300, output_dim=y_train_ohe.shape[1], activation='softmax', init='uniform'))
+
+sgd = SGD(lr=0.001, momentum=0.5, decay=1e-7)
 model.compile(loss='categorical_crossentropy', optimizer=sgd)
 
 model.fit(X_train, y_train_ohe, nb_epoch=100, 
-          batch_size=200, verbose=1, validation_split=0.1,
+          batch_size=300, verbose=1, validation_split=0.1,
           show_accuracy=True)
 
 y_train_pred = model.predict_classes(X_train)
