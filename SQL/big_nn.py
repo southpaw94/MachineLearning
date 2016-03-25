@@ -17,11 +17,11 @@ y_test_ohe = np.array(pd.get_dummies(y_test))
 
 model = Sequential()
 
-model.add(Dense(input_dim=X.shape[1], output_dim=500,
+model.add(Dense(input_dim=X_train.shape[1], output_dim=500,
                 activation='tanh', init='uniform'))
 model.add(Dense(input_dim=500, output_dim=250, 
                 activation='tanh', init='uniform'))
-model.add(Dense(input_dim=250, output_dim=y_ohe.shape[1], 
+model.add(Dense(input_dim=250, output_dim=y_train_ohe.shape[1], 
                 activation='softmax', init='uniform'))
 
 sgd = SGD(lr=0.001, momentum=0.9, decay=1e-6)
